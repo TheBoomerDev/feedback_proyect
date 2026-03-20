@@ -1,0 +1,320 @@
+{
+  "version": 1,
+  "skills": {
+    "agent-browser": {
+      "source": "vercel-labs/agent-browser",
+      "sourceType": "github",
+      "computedHash": "9dcf7342a0a051445137a279855f6ed9b1fb342e46291b799c344ac20e34d409"
+    },
+    "api-design": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "dafbff951f8f1c29336fe9f6cd1e1f2ad9f203b36fcdc8b5a0c1c9cea500e6d5"
+    },
+    "api-design-patterns": {
+      "source": "asyrafhussin/agent-skills",
+      "sourceType": "github",
+      "computedHash": "3f15c74774287c26486439158e2f7454907b6751fbd2e7842f034555e47df796"
+    },
+    "api-documentation": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "0e161c4a4f3a3f5bd6949a1ebc833fd61d29f35a4fed307567a8114d003a95fc"
+    },
+    "authentication-setup": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "13509b82ca5815c5df801a522091263d4034c44a20a50c0b9db49135b2c29d3a"
+    },
+    "autoresearch": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "3a1f178606cc2e923d72bd827f5151ce325b1d67e6b696e17320cd004146dab9"
+    },
+    "backend-engineer": {
+      "source": "siviter-xyz/dot-agent",
+      "sourceType": "github",
+      "computedHash": "cb334c90d6521d716860c38f5043f5e9726130f69cc429781ae145e65c29a671"
+    },
+    "backend-testing": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "5359a83e79545ec290cfe1a6e7063b12c0ca4f8c4dd95e806a4621fc528df1f6"
+    },
+    "code-refactoring": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "18da189464fd9a53133a1372599369ac4b7f3a9da653a907762e20e89cdb2102"
+    },
+    "code-review": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "ac61353e7ec0c8b98660accf0c9688bf5183044b7fa1ee1e189c680ff1a083c6"
+    },
+    "context-engineering": {
+      "source": "siviter-xyz/dot-agent",
+      "sourceType": "github",
+      "computedHash": "32587f3cfc2c600206aeb3f2385ad2a8f64a5e51dcc364293d3f0121e917c776"
+    },
+    "create-agents-md": {
+      "source": "siviter-xyz/dot-agent",
+      "sourceType": "github",
+      "computedHash": "7b14bf7a36491bb6f65f6ef69b213d73c29bb80394921b2b12da0af15629e168"
+    },
+    "create-skill": {
+      "source": "siviter-xyz/dot-agent",
+      "sourceType": "github",
+      "computedHash": "117464d5a01acfbf3c7d3939a90df78e2196025f545bdded831aa4aa63a80080"
+    },
+    "cursor-best-practices": {
+      "source": "siviter-xyz/dot-agent",
+      "sourceType": "github",
+      "computedHash": "83c6ea2105fc8f7255d1edd8cfa4424dee3523760f9812402ac84516039425ba"
+    },
+    "data-analysis": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "d380eb6230b7a285a63b11e18c6c7eeae37f2dd502610ec390975ae1b8627b29"
+    },
+    "debugging": {
+      "source": "siviter-xyz/dot-agent",
+      "sourceType": "github",
+      "computedHash": "0552433c7eaf2031c07b677dab51ecf8a255e2c76d227c8fd853773ae26c7d7e"
+    },
+    "dogfood": {
+      "source": "vercel-labs/agent-browser",
+      "sourceType": "github",
+      "computedHash": "055e73cddeec68e7eb75eab0c3f8490415384f72e98ac05405821427ed0e74b1"
+    },
+    "environment-setup": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "a760a9d691b4d20f6f8d5d6cc4243a20e311958c1ba7dc16c35d99b57a9babad"
+    },
+    "feature-spec": {
+      "source": "pproenca/dot-skills",
+      "sourceType": "github",
+      "computedHash": "d57673d02c72d58434f91a4e1e35a52503ec7c828e84fe70a5586f9b3b02bd8e"
+    },
+    "file-organization": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "f533c6859ba8ab8bb1c91bfb2c0d82ee9e71b5b43dc5776dc9d42a2d3f9c6203"
+    },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "computedHash": "d31e234f0c90694a670222cdd1dafa853e051d7066beda389f1097c22dadd461"
+    },
+    "frontend-design-system": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "c83be916c8b026d69537c389aa9cba662ed77144306360e704f6603833e4c96e"
+    },
+    "frontend-engineer": {
+      "source": "siviter-xyz/dot-agent",
+      "sourceType": "github",
+      "computedHash": "a6e58279c68ab75587d59830ba57b0e0bf816ba131f246ea22b3e1516a13a9b6"
+    },
+    "git-workflow": {
+      "source": "asyrafhussin/agent-skills",
+      "sourceType": "github",
+      "computedHash": "e6a28779208771a57940a14e1f9e463ab65c1f8e660fcc52d05b9ec05de3fab1"
+    },
+    "image": {
+      "source": "vercel-labs/json-render",
+      "sourceType": "github",
+      "computedHash": "f4e8c094db4900ddf1467f8a69596fc9445136b3a62c1312831ff968451f4eb5"
+    },
+    "log-analysis": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "ddb7887f71ae4730fccc90a3430b3b24303f112d23c499cfa069d070c5c3f52c"
+    },
+    "performance-optimization": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "5cbae5d5e98c89e02b18cb43d9f7b9175fd95cf3957b2eaafb0f5a32b53205b1"
+    },
+    "playwright": {
+      "source": "pproenca/dot-skills",
+      "sourceType": "github",
+      "computedHash": "ca5bb4882a7e52762f36220a0e96262198e0c8d48bedaad21a289bab9301d1f9"
+    },
+    "playwriter": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "9ee409ec74e606bdde0d08b4c02d703737b5c4a338545a8bf227f8e8c3e20b6e"
+    },
+    "presentation-builder": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "ff3ce30f4fe86aa233c5cd2461db042b82c7c79ce20afc691637bf468f74ed93"
+    },
+    "react-email": {
+      "source": "vercel-labs/json-render",
+      "sourceType": "github",
+      "computedHash": "fcdc6735efd9d8f4cfd8bd702608a77a6a312be0b5a4e8de58e47eba145045c3"
+    },
+    "react-pdf": {
+      "source": "vercel-labs/json-render",
+      "sourceType": "github",
+      "computedHash": "a02018e64af5fc7e07e09fdd27ed43cc2b34b4ff1fbfcc21c0b391564f6a9528"
+    },
+    "react-vite-best-practices": {
+      "source": "asyrafhussin/agent-skills",
+      "sourceType": "github",
+      "computedHash": "82994934665a490b227fabdfec3d148b1fa291d77d82ccf978e761b9e1ff6e4c"
+    },
+    "redux": {
+      "source": "vercel-labs/json-render",
+      "sourceType": "github",
+      "computedHash": "9b71c3a0dd33f8ff2cea3214eed4d7a0f3d4c04e0714ad069b8ce3efc08386f3"
+    },
+    "remotion": {
+      "source": "vercel-labs/json-render",
+      "sourceType": "github",
+      "computedHash": "391d340781220430ac6a8cc92fea99c5df026439d2e9be46b9d2c5d20488e3ef"
+    },
+    "remotion-best-practices": {
+      "source": "vercel-labs/json-render",
+      "sourceType": "github",
+      "computedHash": "4756068d1b2f92ef4f6d1301094a9862ef275687d3dbf26fda5e52cae3fca4c1"
+    },
+    "remotion-video-production": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "792969beb7b321db2abdf10d4b1b232b34652af752b0d5b4f70db75f75f6bfdb"
+    },
+    "responsive-design": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "f9378e731deb2b131442973c55fcc9d5e80f5515c55200a8c86f63bb97410b37"
+    },
+    "security-best-practices": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "a8c825eb0f2d2d3381f93dad83ea531579445c5646b38be0170f4a782689cf4b"
+    },
+    "semantic-git": {
+      "source": "siviter-xyz/dot-agent",
+      "sourceType": "github",
+      "computedHash": "4bdd3781ea412c6a0a7fecec710e3d71a14d2c6157b92ef72fc691b13b991392"
+    },
+    "seo-best-practices": {
+      "source": "asyrafhussin/agent-skills",
+      "sourceType": "github",
+      "computedHash": "b54b53580eaf2faf1fe3cc1ccbdd8174b954ae640623e22c01b041f6e5141b4b"
+    },
+    "shadcn": {
+      "source": "vercel-labs/json-render",
+      "sourceType": "github",
+      "computedHash": "fa8e374b96f1f1d0a0f81adb97a843b82753e546d9ac176c0dace04f879090d3"
+    },
+    "skill-standardization": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "bc4967d5ccf73a4ea49d279ede893f5efa4e35c7b1a71faccca13de91f8e7178"
+    },
+    "software-engineer": {
+      "source": "siviter-xyz/dot-agent",
+      "sourceType": "github",
+      "computedHash": "8e6dea5e5b2cdd6b0a382f15b5c58106fddc4969897a0ffcd42c3b0670372f29"
+    },
+    "solid": {
+      "source": "vercel-labs/json-render",
+      "sourceType": "github",
+      "computedHash": "b9d43604f69a8dc6651f82047bfd1c407a5686f40ec9f10ba6d5c503ef50024f"
+    },
+    "tailwind-best-practices": {
+      "source": "asyrafhussin/agent-skills",
+      "sourceType": "github",
+      "computedHash": "39145b4b9d12b154d9ff9261805d225557a1dcb5c881b1da8dcc027004aefd44"
+    },
+    "task-estimation": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "5166ae0e4efc5fb8ec47e9484762895be86eec68ad177acd75555fddc0b81b45"
+    },
+    "task-planning": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "1459a31d3c87df7fd601a99479363a7f66da1cd2089f08405a7d4854d0da3a93"
+    },
+    "tdd": {
+      "source": "pproenca/dot-skills",
+      "sourceType": "github",
+      "computedHash": "09b4598d374af2e1872c4b59ac316859a58b5e8cf0aef6c5f41c1b31a818eb89"
+    },
+    "technical-writing": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "0f4fb1976596822509e3ef98546250d89337bce036c99b0bae1f6598fe0a156c"
+    },
+    "terminal-ui": {
+      "source": "pproenca/dot-skills",
+      "sourceType": "github",
+      "computedHash": "f5c35268ccb3fd6dd50312bb0bc5dc6c19917ee83b88496d59ff5f2dd5271208"
+    },
+    "testing-best-practices": {
+      "source": "asyrafhussin/agent-skills",
+      "sourceType": "github",
+      "computedHash": "590eb4064d9fa41854f7871991a3c1ef566553593338632c6cf88d9984194d61"
+    },
+    "typescript-react-patterns": {
+      "source": "asyrafhussin/agent-skills",
+      "sourceType": "github",
+      "computedHash": "650048e53310097d1e9029a668c0b39e5738ce70fbe3b23f35cd875fc05b48e5"
+    },
+    "ui-component-patterns": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "6903616a42c711d7cee7ddc2a34233c8dfda67868dd47905edd3c6374fc49ba9"
+    },
+    "user-guide-writing": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "e396b8378c0c98b92fb849ec7a94d5adb902b9f33b37188c8942073112ae8558"
+    },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "afeca00ac2f492d88fdd010e73d91719a5b57c564bb4a73325b0bd77e11323ab"
+    },
+    "vitest": {
+      "source": "pproenca/dot-skills",
+      "sourceType": "github",
+      "computedHash": "84d2d291054736df0cdee47d1a9a8d3ceb5b9e5a06afb879edff51f55ef30816"
+    },
+    "web-accessibility": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "1e0a30c11fc1524b36124c278642204597e137d927a46cc6262753c174af5a81"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "a6a44d5498f7e8f68289902f3dedfc6f38ae0cee1e96527c80724cf27f727c2a"
+    },
+    "workflow-automation": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "fca71b96f0070be7c89412ae05df0ca3e8457980e2e6494de5d61a05a2e9245d"
+    },
+    "yaml": {
+      "source": "vercel-labs/json-render",
+      "sourceType": "github",
+      "computedHash": "a2593939b5c44aee328144585b987ada6af0afc887781b5c3690b6ca9a6cbf70"
+    },
+    "zod": {
+      "source": "pproenca/dot-skills",
+      "sourceType": "github",
+      "computedHash": "e5d8e35002d0d6b03db0b0daad54e1b82c9c10804f8a745025c07db5ea685655"
+    },
+    "zustand": {
+      "source": "vercel-labs/json-render",
+      "sourceType": "github",
+      "computedHash": "41cb7e8b24638b78524e9b71a3fcd6f54a672009526b1643920a258f3baccb32"
+    }
+  }
+}

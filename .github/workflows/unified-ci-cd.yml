@@ -1,0 +1,202 @@
+name: Unified CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, dev, release, demo, edu ]
+  pull_request:
+    branches: [ main, dev ]
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  # Build backend
+  build-backend:
+    runs-on: ubuntu-latest
+    name: 🏗️ Build Backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'yarn'
+          cache-dependency-path: backend/yarn.lock
+
+      - name: Clean dependency installation
+        working-directory: backend
+        run: yarn install --legacy-peer-deps
+
+      - name: Build backend
+        working-directory: backend
+        run: yarn build
+
+      - name: Upload backend artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-artifacts
+          path: backend/dist/
+          retention-days: 30
+
+  # Build frontend
+  build-frontend:
+    runs-on: ubuntu-latest
+    name: 🏗️ Build Frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'yarn'
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Clean dependency installation
+        working-directory: frontend
+        run: yarn install --legacy-peer-deps
+
+      - name: Build frontend
+        working-directory: frontend
+        run: yarn build
+
+      - name: Upload frontend artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-artifacts
+          path: frontend/dist/
+          retention-days: 30
+
+  # Build landing
+  build-landing:
+    runs-on: ubuntu-latest
+    name: 🏗️ Build Landing
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'yarn'
+          cache-dependency-path: landing/yarn.lock
+
+      - name: Clean dependency installation
+        working-directory: landing
+        run: yarn install --legacy-peer-deps
+
+      - name: Build landing
+        working-directory: landing
+        run: yarn build
+
+      - name: Upload landing artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: landing-artifacts
+          path: landing/dist/
+          retention-days: 30
+
+  # Release management with release-please
+  release:
+    runs-on: ubuntu-latest
+    name: 📦 Release Please
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [build-backend, build-frontend, build-landing]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run release-please
+        uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  # Automated merges based on triggers
+  merge-branches:
+    runs-on: ubuntu-latest
+    name: 🔄 Automated Merges
+    if: github.event_name == 'push' && !contains(github.event.head_commit.message, 'release-please')
+    needs: [build-backend, build-frontend, build-landing]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Merge dev to main
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          git checkout main
+          git merge dev --no-ff -m "Merge dev into main"
+          git push origin main
+
+      - name: Merge main to release
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git checkout release
+          git merge main --no-ff -m "Merge main into release"
+          git push origin release
+
+      - name: Merge release to demo
+        if: github.ref == 'refs/heads/release'
+        run: |
+          git checkout demo
+          git merge release --no-ff -m "Merge release into demo"
+          git push origin demo
+
+      - name: Merge demo to edu
+        if: github.ref == 'refs/heads/demo'
+        run: |
+          git checkout edu
+          git merge demo --no-ff -m "Merge demo into edu"
+          git push origin edu
+
+  # Artifact packaging and release on main
+  package-release:
+    runs-on: ubuntu-latest
+    name: 📦 Package & Release
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [build-backend, build-frontend, build-landing]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-artifacts
+          path: backend/dist/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: frontend-artifacts
+          path: frontend/dist/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: landing-artifacts
+          path: landing/dist/
+
+      - name: Create release archive
+        run: |
+          tar -czf release.tar.gz backend/dist/ frontend/dist/ landing/dist/
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-archive
+          path: release.tar.gz
+          retention-days: 60

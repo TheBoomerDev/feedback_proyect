@@ -1,0 +1,19 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "node",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": true,
+      "draft": false,
+      "prerelease": false
+    }
+  },
+  "changelog-path": "CHANGELOG.md",
+  "release-notes-path": "RELEASE_NOTES.md",
+  "versioning-strategy": "increase",
+  "tag-separator": "-",
+  "pull-request-title-pattern": "chore: release${component} ${version}",
+  "pull-request-header": "Automated release PR",
+  "separate-pull-requests": false,
+  "bootstrap-sha": "initial"
+}

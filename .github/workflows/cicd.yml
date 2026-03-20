@@ -1,0 +1,298 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, dev, release, demo, edu ]
+  pull_request:
+    branches: [ main, dev ]
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+  pull-requests: write
+  id-token: write
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'yarn'
+        cache-dependency-path: backend/yarn.lock
+
+    - name: Clean dependency installation
+      working-directory: backend
+      run: yarn install --legacy-peer-deps
+
+    - name: Run backend tests
+      working-directory: backend
+      run: yarn test
+
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'yarn'
+        cache-dependency-path: frontend/yarn.lock
+
+    - name: Clean dependency installation
+      working-directory: frontend
+      run: yarn install --legacy-peer-deps
+
+    - name: Run frontend tests
+      working-directory: frontend
+      run: yarn test
+
+  test-landing:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'yarn'
+        cache-dependency-path: landing/yarn.lock
+
+    - name: Clean dependency installation
+      working-directory: landing
+      run: yarn install --legacy-peer-deps
+
+    - name: Build landing page
+      working-directory: landing
+      run: yarn build
+
+  # Release-please for version management
+  release:
+    runs-on: ubuntu-latest
+    name: 📦 Release Management
+    needs: [test-backend, test-frontend, test-landing]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Release please
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: .github/release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  # Automated merges to branches
+  merge-branches:
+    runs-on: ubuntu-latest
+    name: 🔀 Branch Merges
+    needs: [release]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Merge main to demo
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout demo
+          git merge main --no-edit
+          git push origin demo
+
+      - name: Merge demo to edu
+        run: |
+          git checkout edu
+          git merge demo --no-edit
+          git push origin edu
+
+  deploy-backend:
+    needs: [test-backend, test-frontend, test-landing]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'yarn'
+        cache-dependency-path: backend/yarn.lock
+
+    - name: Clean dependency installation
+      working-directory: backend
+      run: yarn install --legacy-peer-deps
+
+    - name: Build backend
+      working-directory: backend
+      run: yarn build
+
+    - name: Setup Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to Coolify Registry
+      uses: docker/login-action@v3
+      with:
+        registry: registry.coolify.io
+        username: ${{ secrets.COOLIFY_USERNAME }}
+        password: ${{ secrets.COOLIFY_PASSWORD }}
+
+    - name: Build and push backend
+      uses: docker/build-push-action@v5
+      with:
+        context: ./backend
+        file: ./backend/Dockerfile.prod
+        push: true
+        tags: registry.coolify.io/feedback-widget-backend:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Deploy to Coolify
+      run: |
+        curl -X POST "${{ secrets.COOLIFY_WEBHOOK_URL }}" \
+        -H "Authorization: Bearer ${{ secrets.COOLIFY_API_KEY }}" \
+        -H "Content-Type: application/json" \
+        -d '{
+            "ref": "main",
+            "repository": {
+              "full_name": "${{ github.repository }}"
+            }
+          }'
+
+  deploy-frontend:
+    needs: [test-backend, test-frontend, test-landing]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'yarn'
+        cache-dependency-path: frontend/yarn.lock
+
+    - name: Clean dependency installation
+      working-directory: frontend
+      run: yarn install --legacy-peer-deps
+
+    - name: Build frontend
+      working-directory: frontend
+      run: yarn build
+
+    - name: Deploy to Cloudflare Pages
+      uses: cloudflare/pages-action@v1
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        projectName: feedback-widget-frontend
+        directory: frontend/dist
+        gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-landing:
+    needs: [test-backend, test-frontend, test-landing]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'yarn'
+        cache-dependency-path: landing/yarn.lock
+
+    - name: Clean dependency installation
+      working-directory: landing
+      run: yarn install --legacy-peer-deps
+
+    - name: Build landing page
+      working-directory: landing
+      run: yarn build
+
+    - name: Deploy to Vercel
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-args: '--prod'
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
+        working-directory: landing
+
+  # Artifact packaging on main releases
+  package-release:
+    runs-on: ubuntu-latest
+    name: 📦 Package Release Artifacts
+    needs: [release]
+    if: needs.release.outputs.release_created == 'true'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'yarn'
+
+      - name: Clean dependency installation - backend
+        working-directory: backend
+        run: yarn install --legacy-peer-deps
+
+      - name: Build backend
+        working-directory: backend
+        run: yarn build
+
+      - name: Clean dependency installation - frontend
+        working-directory: frontend
+        run: yarn install --legacy-peer-deps
+
+      - name: Build frontend
+        working-directory: frontend
+        run: yarn build
+
+      - name: Clean dependency installation - landing
+        working-directory: landing
+        run: yarn install --legacy-peer-deps
+
+      - name: Build landing
+        working-directory: landing
+        run: yarn build
+
+      - name: Create release archive
+        run: |
+          mkdir -p release-artifacts
+          tar -czf release-artifacts/feedback-widget-backend-${{ needs.release.outputs.tag_name }}.tar.gz backend/dist/
+          tar -czf release-artifacts/feedback-widget-frontend-${{ needs.release.outputs.tag_name }}.tar.gz frontend/dist/
+          tar -czf release-artifacts/feedback-widget-landing-${{ needs.release.outputs.tag_name }}.tar.gz landing/dist/
+          tar -czf release-artifacts/feedback-widget-full-${{ needs.release.outputs.tag_name }}.tar.gz backend/dist/ frontend/dist/ landing/dist/
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: release-artifacts/
+          retention-days: 365

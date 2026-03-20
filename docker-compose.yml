@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7-jammy
+    container_name: feedback-widget-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: feedbackwidget
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./docker/mongo-init:/docker-entrypoint-initdb.d
+    networks:
+      - feedback-widget
+
+  backend:
+    build: ./backend
+    container_name: feedback-widget-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      MONGODB_URI: mongodb://admin:password@mongodb:27017/feedbackwidget?authSource=admin
+      JWT_SECRET: dev-secret-key-change-in-production
+      FRONTEND_URL: http://localhost:3000
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - mongodb
+    networks:
+      - feedback-widget
+    command: npm run dev
+
+  frontend:
+    build: ./frontend
+    container_name: feedback-widget-frontend
+    restart: unless-stopped
+    ports:
+      - "3002:80"
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html
+    networks:
+      - feedback-widget
+
+  landing:
+    build: ./landing
+    container_name: feedback-widget-landing
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./landing:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - feedback-widget
+    command: npm run dev
+
+volumes:
+  mongodb_data:
+
+networks:
+  feedback-widget:
+    driver: bridge

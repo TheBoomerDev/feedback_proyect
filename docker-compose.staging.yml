@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7-jammy
+    container_name: feedback-widget-mongo-staging
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: feedbackwidget
+    volumes:
+      - mongodb_staging_data:/data/db
+    networks:
+      - feedback-widget-staging
+    # Security: Don't expose MongoDB port in staging
+    # ports:
+    #   - "27017:27017"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    container_name: feedback-widget-backend-staging
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env.staging
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongodb
+    networks:
+      - feedback-widget-staging
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  mongodb_staging_data:
+
+networks:
+  feedback-widget-staging:
+    driver: bridge
